@@ -9,9 +9,9 @@
     let
 
       # git revision to use (for version and git pull
-      #llvmRevision = "llvmorg-17-init";
-      llvmRevision = "08ed557714eed7f5cde9d1c5606f58280683884a";
-      circtRevision = "39b4f01a665e62b8770ea66b31abe7c1b8a9bfb2";
+      #llvmRevision = "llvmorg-18-init";
+      llvmRevision = "2ee2b6aa7a3d9ba6ba13f6881b25e26d7d12c823";
+      circtRevision = "464f177ddcd3eb737fe8a592d20a24b15f25aef6";
 
       # to work with older version of flakes
       lastModifiedDate = self.lastModifiedDate or self.lastModified or "19700101";
@@ -36,14 +36,15 @@
       # A Nixpkgs overlay.
       overlays.default = final: prev: {
 
-        mlir = with final; llvmPackages_17.stdenv.mkDerivation rec {
+        mlir = with final; llvmPackages_18.stdenv.mkDerivation rec {
           name = "mlir-${version}";
 
           src = fetchFromGitHub {
             owner = "llvm";
             repo = "llvm-project";
             rev = llvmRevision;
-            sha256 = "sha256-9fNCqUDWI3Rjizkps5vgLy0ZtMgFeFmyh1yCWLj8NVc="; # lib.fakeSha256;
+            sha256 = "sha256-piXv4YUf8q5Lf36my0bHtVkSJTrc+NvyZpLEwLPfV7U="; # lib.fakeSha256;
+            #sha256 = lib.fakeSha256;
           };
 
           sourceRoot = "source/llvm";
@@ -54,9 +55,9 @@
             cmake
             ncurses
             zlib
-            llvmPackages_17.llvm
-            llvmPackages_17.clang
-            llvmPackages_17.bintools
+            llvmPackages_18.llvm
+            llvmPackages_18.clang
+            llvmPackages_18.bintools
           ];
 
           buildInputs = [ libxml2 ];
@@ -87,7 +88,7 @@
             "-DCMAKE_C_COMPILER=clang"
             "-DCMAKE_CXX_COMPILER=clang++"
             "-DLLVM_ENABLE_LLD=ON"
-            #"-DLLVM_USE_LINKER=${llvmPackages_17.bintools}/bin/lld"
+            #"-DLLVM_USE_LINKER=${llvmPackages_18.bintools}/bin/lld"
             # CCache can drastically speed up further rebuilds, try adding:
             #"-DLLVM_CCACHE_BUILD=ON"
             # libxml2 needs to be disabled because the LLVM build system ignores its .la
@@ -102,14 +103,15 @@
           # '';
         };
 
-        circt = with final; llvmPackages_17.stdenv.mkDerivation rec {
+        circt = with final; llvmPackages_18.stdenv.mkDerivation rec {
           name = "circt-${version}";
 
           src = fetchFromGitHub {
             owner = "llvm";
             repo = "circt";
             rev = circtRevision;
-            sha256 = "sha256-/4UrcwVyQnOwJMpRn0tMfJi/zm5rmrnv9IBE7/2rOY8="; # lib.fakeSha256;
+            sha256 = "sha256-gl/TGZe30GAGnVrZl+iSBLTujddz7Qs6jUOq2gZ4xVI="; # lib.fakeSha256;
+            #sha256 = lib.fakeSha256;
           };
 
           sourceRoot = "source/";
@@ -120,9 +122,9 @@
             cmake
             #ncurses
             #zlib
-            #llvmPackages_17.llvm
-            llvmPackages_17.clang
-            llvmPackages_17.bintools
+            #llvmPackages_18.llvm
+            llvmPackages_18.clang
+            llvmPackages_18.bintools
             mlir
             lit
           ];
