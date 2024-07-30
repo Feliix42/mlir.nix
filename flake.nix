@@ -121,7 +121,7 @@
             ninja
             cmake
             #ncurses
-            #zlib
+            zlib
             #llvmPackages_18.llvm
             llvmPackages_18.clang
             llvmPackages_18.bintools
