@@ -2,14 +2,15 @@
   description = "Custom-Built MLIR";
 
   # Nixpkgs / NixOS version to use.
-  inputs.nixpkgs.url = "nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "nixpkgs/nixos-25.05";
 
   outputs = { self, nixpkgs }:
     let
 
       # git revision to use (for version and git pull
-      gitRevision = "llvmorg-17-init";
+      # gitRevision = "llvmorg-17-init";
       # gitRevision = "603c286334b07f568d39f6706c848f576914f323";
+      gitRevision = "45e874e39030bc622ea43fbcfc4fcdd1dd404353";
 
       # to work with older version of flakes
       lastModifiedDate = self.lastModifiedDate or self.lastModified or "19700101";
@@ -34,7 +35,7 @@
       # A Nixpkgs overlay.
       overlay = final: prev: {
 
-        mlir = with final; llvmPackages_16.stdenv.mkDerivation rec {
+        mlir = with final; llvmPackages_20.stdenv.mkDerivation rec {
           name = "mlir-${version}";
 
           src = fetchFromGitHub {
@@ -52,9 +53,9 @@
             cmake
             ncurses
             zlib
-            llvmPackages_16.llvm
-            llvmPackages_16.clang
-            llvmPackages_16.bintools
+            llvmPackages_20.llvm
+            llvmPackages_20.clang
+            llvmPackages_20.bintools
           ];
 
           buildInputs = [ libxml2 ];
@@ -65,7 +66,7 @@
             #"-DC_INCLUDE_DIRS=${stdenv.cc.libc.dev}/include"
             "-GNinja"
             # Debug for debug builds
-            "-DCMAKE_BUILD_TYPE=Release"
+            "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
             # from the original LLVM expr
             "-DLLVM_LINK_LLVM_DYLIB=ON"
             # inst will be our installation prefix
